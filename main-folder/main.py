@@ -1,5 +1,7 @@
 from constants import *
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 import pygame
 
 def main():
@@ -9,9 +11,19 @@ def main():
 
     # Créer la fenêtre et le joueur à l'intérieur de main(
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    clock = pygame.time.Clock()
+
+    asteroids = pygame.sprite.Group()
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    Asteroid.containers = (asteroids, updatable, drawable)
+    Player.containers = (updatable, drawable)
+    AsteroidField.containers = (updatable)
+
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    asteroid_field = AsteroidField()
     
-    clock = pygame.time.Clock() 
     dt = 0
 
     while True:
@@ -21,13 +33,17 @@ def main():
                 return
         
         # Mettre à jour la logique du joueur
-        player.update(dt)
+        for obj in updatable:
+            obj.update(dt)
 
         # Remplir l'écran en noir
         screen.fill((0, 0, 0))
         
         # Dessiner le joueur avant le flip
-        player.draw(screen)
+        for obj in drawable:
+            obj.draw(screen)
+        
+        updatable.update(dt)
         
         # Rafraîchir l'affichage en dernier
         pygame.display.flip()
