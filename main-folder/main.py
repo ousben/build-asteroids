@@ -7,7 +7,7 @@ def main():
     pygame.init()
     print("Starting asteroids!")
 
-    # Créer la fenêtre et le joueur à l'intérieur de main()
+    # Créer la fenêtre et le joueur à l'intérieur de main(
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     
@@ -19,6 +19,9 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
+        
+        # Mettre à jour la logique du joueur
+        player.update(dt)
 
         # Remplir l'écran en noir
         screen.fill((0, 0, 0))
